@@ -6,22 +6,22 @@ import android.os.Parcel;
  * Created by wenhao on 2017-11-04.
  */
 
-public class Tag implements Parcelable{
+public final class Tag implements Parcelable{
 
-    private String name;
+    private final String name;
 
     public Tag(String name){
         this.name = name;
     }
 
-    public Tag(Parcel in){
-        this.name = in.readString();
+    public Tag(Parcel source){
+        this.name = source.readString();
     }
 
     public static final Creator<Tag> CREATOR = new Creator<Tag>() {
         @Override
-        public Tag createFromParcel(Parcel in) {
-            return new Tag(in);
+        public Tag createFromParcel(Parcel source) {
+            return new Tag(source);
         }
 
         @Override
@@ -34,17 +34,13 @@ public class Tag implements Parcelable{
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     @Override
     public int describeContents(){
         return 0;
     }
 
     @Override
-    public void writeToParcel(Parcel parcel, int i){
-        parcel.writeString(this.name);
+    public void writeToParcel(Parcel dest, int i){
+        dest.writeString(this.name);
     }
 }
