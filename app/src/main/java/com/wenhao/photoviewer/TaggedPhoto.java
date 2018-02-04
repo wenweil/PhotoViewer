@@ -4,6 +4,9 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
 
 /**
  * Created by wenhao on 2017-11-04.
@@ -11,25 +14,26 @@ import java.util.ArrayList;
 
 public class TaggedPhoto implements Parcelable{
 
-    private final SourcePhoto source;
-    private String title;
-    private final ArrayList<Tag> tags;
+    private final SourcePhoto mSource;
+    private String mTitle;
+    private final Set<Tag> mTags;
 
     public TaggedPhoto(SourcePhoto source){
         this(source, source.getTitle());
     }
 
     public TaggedPhoto(SourcePhoto source, String title){
-        this.source = source;
-        this.title = title;
-        this.tags = new ArrayList<Tag>();
+        this.mSource = source;
+        this.mTitle = title;
+        this.mTags = new HashSet<Tag>();
     }
 
     protected TaggedPhoto(Parcel source){
-        this.source = (SourcePhoto) source.readParcelable(SourcePhoto.class.getClassLoader());
-        this.title = source.readString();
-        this.tags = new ArrayList<Tag>();
-        source.readList(this.tags,Tag.class.getClassLoader());
+        this.mSource = (SourcePhoto) source.readParcelable(SourcePhoto.class.getClassLoader());
+        this.mTitle = source.readString();
+        ArrayList<Tag> tempTags = new ArrayList<Tag>();
+        source.readList(tempTags,Tag.class.getClassLoader());
+        this.mTags = new HashSet<Tag>(tempTags);
     }
 
     public static final Creator<TaggedPhoto> CREATOR = new Creator<TaggedPhoto>(){
@@ -45,18 +49,35 @@ public class TaggedPhoto implements Parcelable{
     };
 
     public String getTitle() {
-        return this.title;
+        return this.mTitle;
     }
 
     public void setTitle(String title) {
-        this.title = title;
+        this.mTitle = title;
     }
 
-    public ArrayList<Tag> getTags() {
-        return this.tags;
+    public Set<Tag> getTags() {
+        return this.mTags;
     }
 
-    public void addTags(Tag tag) {
+    public void addTag(Tag tag) {
+        this.mTags.add(tag);
+    }
+
+    public void removeTag(Tag tag){
+        this.mTags.remove(tag);
+    }
+
+    public void removeAllTags(){
+        this.mTags.clear();
+    }
+
+    public String getSourceTitle(){
+        return this.mSource.getTitle();
+    }
+
+    public String getSourceFile(){
+        return this.mSource.getSourceFile();
     }
 
     @Override
@@ -66,8 +87,9 @@ public class TaggedPhoto implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeParcelable(this.source, 0);
-        dest.writeString(this.title);
-        dest.writeTypedList(this.tags);
+        dest.writeParcelable(this.mSource, 0);
+        dest.writeString(this.mTitle);
+        ArrayList<Tag> tempTags = new ArrayList<Tag>(this.mTags);
+        dest.writeTypedList(tempTags);
     }
 }

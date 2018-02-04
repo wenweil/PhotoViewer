@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">photoviewer</string>
+    <string name="app_name">PhotoViewer</string>
+    <string name="button_start">Start</string>
+    <string name="button_rename">Rename</string>
+    <string name="search_hint"></string>
+    <string name="search_title">Search</string>
 </resources>

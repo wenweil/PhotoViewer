@@ -3,26 +3,30 @@ package com.wenhao.photoviewer;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.ArrayList;
+import java.io.File;
 
 
 /**
- * Created by wenha on 2018-01-15.
+ * Created by wenhao on 2018-01-15.
  */
 
 public final class SourcePhoto implements Parcelable{
 
-    private final String sourceFile;
-    private final String title;
+    private final String mSourceFile;
+    private final String mTitle;
+
+    public SourcePhoto(String sourceFile){
+        this(sourceFile, (new File(sourceFile)).getName());
+    }
 
     public SourcePhoto(String sourceFile, String title){
-        this.sourceFile = sourceFile;
-        this.title = title;
+        this.mSourceFile = sourceFile;
+        this.mTitle = title;
     }
 
     public SourcePhoto(Parcel source){
-        this.sourceFile = source.readString();
-        this.title = source.readString();
+        this.mSourceFile = source.readString();
+        this.mTitle = source.readString();
     }
 
     public static final Creator<SourcePhoto> CREATOR = new Creator<SourcePhoto>(){
@@ -39,11 +43,11 @@ public final class SourcePhoto implements Parcelable{
     };
 
     public String getSourceFile(){
-        return this.sourceFile;
+        return this.mSourceFile;
     }
 
     public String getTitle(){
-        return this.title;
+        return this.mTitle;
     }
 
     @Override
@@ -53,8 +57,8 @@ public final class SourcePhoto implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.sourceFile);
-        dest.writeString(this.title);
+        dest.writeString(this.mSourceFile);
+        dest.writeString(this.mTitle);
 
     }
 }

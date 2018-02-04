@@ -8,14 +8,14 @@ import android.os.Parcel;
 
 public final class Tag implements Parcelable{
 
-    private final String name;
+    private final String mName;
 
     public Tag(String name){
-        this.name = name;
+        this.mName = name;
     }
 
     public Tag(Parcel source){
-        this.name = source.readString();
+        this.mName = source.readString();
     }
 
     public static final Creator<Tag> CREATOR = new Creator<Tag>() {
@@ -31,7 +31,7 @@ public final class Tag implements Parcelable{
     };
 
     public String getName() {
-        return name;
+        return mName;
     }
 
     @Override
@@ -41,6 +41,21 @@ public final class Tag implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int i){
-        dest.writeString(this.name);
+        dest.writeString(this.mName);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Tag tag = (Tag) o;
+
+        return this.mName != null ? this.mName.equals(tag.mName) : tag.mName == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return this.mName != null ? this.mName.hashCode() : 0;
     }
 }
